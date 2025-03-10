@@ -1,15 +1,19 @@
 ﻿using System;
-using ServiceContracts.Enums;
 using Entities;
+using ServiceContracts.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO
 {
+    //SE CONSERVAN LAS PROPIEDADES QUE SE DESEEN ACTUALIZAR
     /// <summary>
-    /// Acts as DTO for inserting a new person
+    /// Represents the DTO class that cointains the person details to update
     /// </summary>
-    public class PersonAddRequest
+    public class PersonUpdateRequest
     {
+        [Required(ErrorMessage = "No puede dejar vacío este campo")]
+        public Guid PersonID { get; set; }
+
         [Required(ErrorMessage = "Person Name no puede estar vacío.")]
         public string? PersonName { get; set; }
 
@@ -28,13 +32,14 @@ namespace ServiceContracts.DTO
         public bool ReceiveNewsLetters { get; set; }
 
         /// <summary>
-        /// Convierte el objeto actual PersonAddRequest en un nuevo objeto del tipo Person
+        /// Convierte el objeto actual PersonUpdateRequest en un nuevo objeto del tipo Person
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns Person object</returns>
         public Person ToPerson()
         {
             return new Person()
             {
+                PersonID = PersonID,
                 PersonName = PersonName,
                 Email = Email,
                 DateOfBirth = DateOfBirth,
