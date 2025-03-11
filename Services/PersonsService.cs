@@ -13,10 +13,73 @@ namespace Services
         private readonly List<Person> _persons;
         private readonly ICountriesService _countriesService;
 
-        public PersonsService()
+        public PersonsService(bool initialize = true)
         {
             _persons = new List<Person>();
             _countriesService = new CountriesService();
+
+            if (initialize)
+            {
+                _persons.Add(new Person()
+                {
+                    PersonID = Guid.Parse("FE48F4E1-4596-4B95-B1C0-DC34A0E6BA52"),
+                    PersonName = "Elia",
+                    Email = "eesposito0@cdbaby.com",
+                    DateOfBirth = DateTime.Parse("1993-11-14"),
+                    Gender = "Male",
+                    Address = "23073 Sycamore Junction",
+                    ReceiveNewsLetters = false,
+                    CountryID = Guid.Parse("3BA2FBCC-B1AA-48C9-8175-1F0D410F8804")
+                });
+
+                _persons.Add(new Person()
+                {
+                    PersonID = Guid.Parse("01F25BE8-81AF-4C58-85EC-97AD009F5399"),
+                    PersonName = "Sondra",
+                    Email = "shirsthouse1@yolasite.com",
+                    DateOfBirth = DateTime.Parse("1995-06-19"),
+                    Gender = "Female",
+                    Address = "88 Anzinger Trail",
+                    ReceiveNewsLetters = true,
+                    CountryID = Guid.Parse("20DEA190-7755-470B-BD49-FC8E1E6887F5")
+                });
+
+                _persons.Add(new Person()
+                {
+                    PersonID = Guid.Parse("F3D3F76D-0FAA-4897-BF09-DBBA899BF530"),
+                    PersonName = "Kippie",
+                    Email = "ktretter2@slashdot.org",
+                    DateOfBirth = DateTime.Parse("1993-09-20"),
+                    Gender = "Male",
+                    Address = "07837 Florence",
+                    ReceiveNewsLetters = true,
+                    CountryID = Guid.Parse("A5A63E9C-CF28-4039-B95C-6C5980C1DF7B")
+                });
+
+                _persons.Add(new Person()
+                {
+                    PersonID = Guid.Parse("93C382C7-575B-4202-8CAC-BC0191B04470"),
+                    PersonName = "Hershel",
+                    Email = "hweber3@creativecommons.org",
+                    DateOfBirth = DateTime.Parse("1992-10-05"),
+                    Gender = "Male",
+                    Address = "931 Green Ridge Park",
+                    ReceiveNewsLetters = false,
+                    CountryID = Guid.Parse("97580049-15E0-4019-A75A-DE32297D3164")
+                });
+
+                _persons.Add(new Person()
+                {
+                    PersonID = Guid.Parse("46A91456-0FA8-4BC5-8CDA-1A4098C09ACD"),
+                    PersonName = "Jillene",
+                    Email = "jmacaree4@netlog.com",
+                    DateOfBirth = DateTime.Parse("1994-10-23"),
+                    Gender = "Female",
+                    Address = "3398 Doe Crossing Parkway",
+                    ReceiveNewsLetters = false,
+                    CountryID = Guid.Parse("D3BE1E3E-F733-44EB-B812-1ED2DA2B0CD8")
+                });
+            }
         }
 
         private PersonResponse ConvertPersonIntoPersonResponse(Person person)
@@ -53,7 +116,7 @@ namespace Services
 
         public List<PersonResponse> GetAllPersons()
         {
-            return _persons.Select(temp => temp.ToPersonResponse()).ToList();
+            return _persons.Select(temp => ConvertPersonIntoPersonResponse(temp)).ToList();
         }
 
         public PersonResponse? GetPersonByPersonID(Guid? personID)
@@ -70,7 +133,7 @@ namespace Services
                 return null;
             }
 
-            return person.ToPersonResponse();
+            return ConvertPersonIntoPersonResponse(person);
         }
 
         public List<PersonResponse> GetFilteredPersons(string searchBy, string? searchString)
@@ -85,27 +148,27 @@ namespace Services
 
             switch (searchBy)
             {
-                case nameof(Person.PersonName):
+                case nameof(PersonResponse.PersonName):
                     matchingPersons = allPersons.Where(temp => !string.IsNullOrEmpty(temp.PersonName) ? temp.PersonName.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true).ToList();
                     break;
 
-                case nameof(Person.Email):
+                case nameof(PersonResponse.Email):
                     matchingPersons = allPersons.Where(temp => !string.IsNullOrEmpty(temp.Email) ? temp.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true).ToList();
                     break;
 
-                case nameof(Person.DateOfBirth):
+                case nameof(PersonResponse.DateOfBirth):
                     matchingPersons = allPersons.Where(temp => temp.DateOfBirth != null ? temp.DateOfBirth.Value.ToString("dd MM yyyy").Contains(searchString, StringComparison.OrdinalIgnoreCase) : true).ToList();
                     break;
 
-                case nameof(Person.Gender):
+                case nameof(PersonResponse.Gender):
                     matchingPersons = allPersons.Where(temp => !string.IsNullOrEmpty(temp.Gender) ? temp.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true).ToList();
                     break;
 
-                case nameof(Person.CountryID):
+                case nameof(PersonResponse.CountryID):
                     matchingPersons = allPersons.Where(temp => !string.IsNullOrEmpty(temp.Country) ? temp.Country.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true).ToList();
                     break;
 
-                case nameof(Person.Address):
+                case nameof(PersonResponse.Address):
                     matchingPersons = allPersons.Where(temp => !string.IsNullOrEmpty(temp.Address) ? temp.Address.Contains(searchString, StringComparison.OrdinalIgnoreCase) : true).ToList();
                     break;
 
@@ -189,7 +252,7 @@ namespace Services
             matchingPerson.Address = personUpdateRequest.Address;
             matchingPerson.ReceiveNewsLetters = personUpdateRequest.ReceiveNewsLetters;
 
-            return matchingPerson.ToPersonResponse();
+            return ConvertPersonIntoPersonResponse(matchingPerson);
         }
 
         public bool DeletePerson(Guid? personID)
