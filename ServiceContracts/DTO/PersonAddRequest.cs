@@ -15,12 +15,16 @@ namespace ServiceContracts.DTO
 
         [Required(ErrorMessage = "Email no puede estar vacío.")]
         [EmailAddress(ErrorMessage = "Ingrese un email válido.")]
+        [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
+        [Required(ErrorMessage = "Seleccione su género")]
         public GenderOptions? Gender { get; set; }
-
+        
+        [Required(ErrorMessage ="Seleccione un país")]
         public Guid? CountryID { get; set; }
 
         public string? Address { get; set; }
