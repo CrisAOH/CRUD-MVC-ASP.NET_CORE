@@ -1,5 +1,7 @@
 using ServiceContracts;
 using Services;
+using Microsoft.EntityFrameworkCore;
+using Entities;
 
 namespace CRUD_Example
 {
@@ -11,6 +13,11 @@ namespace CRUD_Example
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<ICountriesService, CountriesService>();
             builder.Services.AddSingleton<IPersonsService, PersonsService>();
+
+            builder.Services.AddDbContext<PersonsDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
             var app = builder.Build();
 
             if (builder.Environment.IsDevelopment())
