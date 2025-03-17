@@ -100,7 +100,7 @@ namespace CRUD_Example.Controllers
                 );
 
                 ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                return View();
+                return View(personAddRequest);
             }
             PersonResponse personPerson = await _personsService.AddPerson(personAddRequest);
             return RedirectToAction("Index", "Persons");

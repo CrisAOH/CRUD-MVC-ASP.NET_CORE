@@ -9,6 +9,9 @@
 <a asp-controller="Persons" asp-action="Create">
 	Create Person	
 </a>
+@* <a asp-controller="Persons" asp-action="PersonsPDF"> *@
+@* 	Download as PDF *@
+@* </a> *@
 <form asp-controller="Persons" asp-action="Index" method="get">
 	<div class="box flex">
 		<div class="flex-1">
@@ -40,7 +43,7 @@
 			<a asp-controller="Persons" asp-action="Index" class="link-hover">Clear All</a>
 		</div>
 	</div>
-	<table class="table w-100 mt">
+	<table class="table w-100 mt persons">
 		<thead>
 			<tr>
 				@await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData)
