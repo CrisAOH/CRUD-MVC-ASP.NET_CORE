@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Entities;
 using RepositoryContracts;
 using Repositories;
+using Serilog;
 
 namespace CRUD_Example
 {
@@ -12,6 +13,14 @@ namespace CRUD_Example
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseSerilog((HostBuilderContext context, IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
+            {
+                loggerConfiguration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services);
+            });
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
@@ -24,13 +33,22 @@ namespace CRUD_Example
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddHttpLogging(options =>
+            {
+                options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
+            });
+
             var app = builder.Build();
+
+            app.UseSerilogRequestLogging();
 
             if (builder.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpLogging();
             app.UseStaticFiles();
             app.UseRouting();
             app.MapControllers();

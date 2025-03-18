@@ -16,6 +16,8 @@ using AutoFixture.Kernel;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace CRUD_Tests
 {
@@ -33,7 +35,10 @@ namespace CRUD_Tests
             _personsRepositoryMock = new Mock<IPersonsRepository>();
             _personsRepository = _personsRepositoryMock.Object;
 
-            _personsService = new PersonsService(_personsRepository);
+            var diagnosticContextMock = new Mock<IDiagnosticContext>();
+            var loggerMock = new Mock<ILogger<PersonsService>>();
+
+            _personsService = new PersonsService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
             
             _testOutputHelper = testOutputHelper;
         }
