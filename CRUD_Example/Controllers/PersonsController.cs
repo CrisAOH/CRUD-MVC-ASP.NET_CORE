@@ -31,38 +31,6 @@ namespace CRUD_Example.Controllers
             _logger.LogInformation("Index action method of PersonsController");
             _logger.LogDebug($"searchBy: {searchBy}, searchString: {searchString}, sortBy: {sortBy}, sortOrder: {sortOrder}");
             //Search
-            ViewBag.SearchFields = new Dictionary<string, string>()
-            {
-                {
-                    nameof(PersonResponse.PersonName),
-                    "Person Name"
-                },
-
-                {
-                    nameof(PersonResponse.Email),
-                    "Email"
-                },
-
-                {
-                    nameof(PersonResponse.DateOfBirth),
-                    "Date Of Birth"
-                },
-
-                {
-                    nameof(PersonResponse.Gender),
-                    "Gender"
-                },
-
-                {
-                    nameof(PersonResponse.Country),
-                    "Country"
-                },
-
-                {
-                    nameof(PersonResponse.Address),
-                    "Address"
-                },
-            };
             List<PersonResponse> persons = await _personsService.GetFilteredPersons(searchBy, searchString);
             //ViewBag.CurrentSearchBy = searchBy;
             //ViewBag.CurrentSearchString = searchString;

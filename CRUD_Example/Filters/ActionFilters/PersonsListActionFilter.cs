@@ -15,7 +15,7 @@ namespace CRUD_Example.Filters.ActionFilters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            _logger.LogInformation("PersonsListActionFilter.OnActionExecuted Method");
+            _logger.LogInformation("{FilterName}.{MethodName} Method", nameof(PersonsListActionFilter), nameof(OnActionExecuted));
 
             PersonsController personsController = (PersonsController) context.Controller;
 
@@ -82,7 +82,7 @@ namespace CRUD_Example.Filters.ActionFilters
         {
             context.HttpContext.Items["arguments"] = context.ActionArguments;
 
-            _logger.LogInformation("PersonsListActionFilter.OnActionExecuting Method");
+            _logger.LogInformation("{FilterName}.{MethodName} Method", nameof(PersonsListActionFilter), nameof(OnActionExecuting));
 
             if (context.ActionArguments.ContainsKey("searchBy"))
             {
