@@ -10,6 +10,12 @@ using Services;
 namespace CRUD_Example.Controllers
 {
     [Route("[controller]")] //Se añade como prefijo a todas las rutas
+    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[]
+    {
+       "My-Key-From-Controller",
+       "My-Value-From-Controller",
+       3
+    })]
     public class PersonsController : Controller
     {
         private readonly IPersonsService _personsService;
@@ -26,6 +32,12 @@ namespace CRUD_Example.Controllers
         [Route("[action]")]
         [Route("/")]
         [TypeFilter(typeof(PersonsListActionFilter))]
+        [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[]
+        {
+           "My-Key-From-Method",
+           "My-Value-From-Method",
+           1
+        })]
         public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrder = SortOrderOptions.ASC)
         {
             _logger.LogInformation("Index action method of PersonsController");

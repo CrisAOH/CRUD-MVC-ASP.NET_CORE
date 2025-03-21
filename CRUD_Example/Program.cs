@@ -5,6 +5,7 @@ using Entities;
 using RepositoryContracts;
 using Repositories;
 using Serilog;
+using CRUD_Example.Filters.ActionFilters;
 
 namespace CRUD_Example
 {
@@ -21,7 +22,12 @@ namespace CRUD_Example
                 .ReadFrom.Services(services);
             });
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                //options.Filters.Add<ResponseHeaderActionFilter>();
+                var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
+                options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 2));
+            });
 
             builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
             builder.Services.AddScoped<IPersonsRepository, PersonsRepository>();
