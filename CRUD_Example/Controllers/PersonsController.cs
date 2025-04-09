@@ -1,4 +1,8 @@
 ﻿using CRUD_Example.Filters.ActionFilters;
+using CRUD_Example.Filters.AuthorizationFilter;
+using CRUD_Example.Filters.ExceptionFilters;
+using CRUD_Example.Filters.ResourceFilters;
+using CRUD_Example.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rotativa.AspNetCore;
@@ -16,6 +20,7 @@ namespace CRUD_Example.Controllers
        "My-Value-From-Controller",
        3
     })]
+    [TypeFilter(typeof(HandleExceptionFilter))]
     public class PersonsController : Controller
     {
         private readonly IPersonsService _personsService;
@@ -38,6 +43,7 @@ namespace CRUD_Example.Controllers
            "My-Value-From-Method",
            1
         })]
+        [TypeFilter(typeof(PersonsListResultFilter))]
         public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrder = SortOrderOptions.ASC)
         {
             _logger.LogInformation("Index action method of PersonsController");
@@ -74,6 +80,7 @@ namespace CRUD_Example.Controllers
         [Route("[action]")]
         [HttpPost]
         [TypeFilter(typeof(PersonCreateAndEditPostActionFilter))]
+        [TypeFilter(typeof(FeatureDisableResourceFilter))]
         public async Task<IActionResult> Create(PersonAddRequest personRequest)
         {
             PersonResponse personPerson = await _personsService.AddPerson(personRequest);
@@ -82,6 +89,7 @@ namespace CRUD_Example.Controllers
 
         [Route("[action]/{personID}")]
         [HttpGet]
+        [TypeFilter(typeof(TokenResultFilter))]
         public async Task<IActionResult> Edit(Guid personID)
         {
             PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personID);
@@ -108,6 +116,7 @@ namespace CRUD_Example.Controllers
         [Route("[action]/{personID}")]
         [HttpPost]
         [TypeFilter(typeof(PersonCreateAndEditPostActionFilter))]
+        [TypeFilter(typeof(TokenAuthorizationFilter))]
         public async Task<IActionResult> Edit(PersonUpdateRequest personRequest)
         {
             PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personRequest.PersonID);

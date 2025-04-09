@@ -45,10 +45,6 @@ namespace CRUD_Example.Filters.ActionFilters
             {
                 await next();
             }
-
-
-                await next(); //Llama al siguiente filtro o metodo
-
             //AFTER LOGIC
         }
     }
