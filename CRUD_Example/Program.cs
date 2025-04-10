@@ -22,6 +22,8 @@ namespace CRUD_Example
                 .ReadFrom.Services(services);
             });
 
+            builder.Services.ConfigureServices();
+
             builder.Services.AddControllersWithViews(options =>
             {
                 //options.Filters.Add<ResponseHeaderActionFilter>();

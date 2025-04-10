@@ -5,10 +5,10 @@ namespace CRUD_Example.Filters.ExceptionFilters
 {
     public class HandleExceptionFilter : IExceptionFilter
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<HandleExceptionFilter> _logger;
         private readonly IHostEnvironment _environment;
 
-        public HandleExceptionFilter(ILogger logger, IHostEnvironment environment)
+        public HandleExceptionFilter(ILogger<HandleExceptionFilter> logger, IHostEnvironment environment)
         {
             _logger = logger;
             _environment = environment;
