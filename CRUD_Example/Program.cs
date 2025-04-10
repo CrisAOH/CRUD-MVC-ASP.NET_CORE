@@ -22,39 +22,16 @@ namespace CRUD_Example
                 .ReadFrom.Services(services);
             });
 
-            builder.Services.ConfigureServices();
-
-            builder.Services.AddControllersWithViews(options =>
-            {
-                //options.Filters.Add<ResponseHeaderActionFilter>();
-                var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<ResponseHeaderActionFilter>>();
-                options.Filters.Add(new ResponseHeaderActionFilter(logger, "My-Key-From-Global", "My-Value-From-Global", 2));
-            });
-
-            builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
-            builder.Services.AddScoped<IPersonsRepository, PersonsRepository>();
-
-            builder.Services.AddScoped<ICountriesService, CountriesService>();
-            builder.Services.AddScoped<IPersonsService, PersonsService>();
-
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            builder.Services.AddHttpLogging(options =>
-            {
-                options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
-            });
+            builder.Services.ConfigureServices(builder.Configuration);
 
             var app = builder.Build();
-
-            app.UseSerilogRequestLogging();
 
             if (builder.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSerilogRequestLogging();
 
             app.UseHttpLogging();
             app.UseStaticFiles();

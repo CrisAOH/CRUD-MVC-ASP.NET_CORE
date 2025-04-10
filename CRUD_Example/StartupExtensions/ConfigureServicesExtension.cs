@@ -10,7 +10,7 @@ namespace CRUD_Example
 {
     public static class ConfigureServicesExtension
     {
-        public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllersWithViews(options =>
             {
@@ -34,6 +34,8 @@ namespace CRUD_Example
             {
                 options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
             });
+
+            return services;
         } 
     }
 }

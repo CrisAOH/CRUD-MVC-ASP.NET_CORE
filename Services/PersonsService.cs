@@ -10,6 +10,7 @@ using RepositoryContracts;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using SerilogTimings;
+using Exceptions;
 
 namespace Services
 {
@@ -177,7 +178,7 @@ namespace Services
 
             if (matchingPerson == null)
             {
-                throw new ArgumentException("No existe la persona que está buscando");
+                throw new InvalidPersonIDException("No existe la persona que está buscando");
             }
 
             //Actualizar las propiedades

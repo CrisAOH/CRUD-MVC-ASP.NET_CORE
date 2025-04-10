@@ -93,8 +93,6 @@ namespace CRUD_Example.Controllers
         public async Task<IActionResult> Edit(Guid personID)
         {
             PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personID);
-            string user = Environment.UserName;
-            Console.WriteLine(user);
 
             if (personResponse == null)
             {
