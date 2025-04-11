@@ -38,6 +38,8 @@ namespace CRUD_Example.Middleware
 
                 httpContext.Response.StatusCode = 500;
                 await httpContext.Response.WriteAsync("Error occurred.");
+
+                throw;
             }
         }
     }

@@ -6,6 +6,7 @@ using RepositoryContracts;
 using Repositories;
 using Serilog;
 using CRUD_Example.Filters.ActionFilters;
+using CRUD_Example.Middleware;
 
 namespace CRUD_Example
 {
@@ -29,6 +30,11 @@ namespace CRUD_Example
             if (builder.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandlingMiddleware();
             }
 
             app.UseSerilogRequestLogging();
